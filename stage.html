@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="STAGE TIMER AI — fullscreen stage display.">
+  <title>STAGE TIMER AI — Stage</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/app.css">
+  <script defer src="js/core.js"></script>
+  <script defer src="js/store.js"></script>
+  <script defer src="js/sync.js"></script>
+  <script defer src="js/integrations.js"></script>
+  <script defer src="js/stage.js"></script>
+</head>
+<body class="stage-page" data-band="normal">
+  <main class="stage-shell" id="stageShell">
+    <header class="stage-header">
+      <div class="stage-brand">STAGE TIMER <b>AI</b></div>
+      <div class="stage-connection" id="stageConnection" data-status="reconnecting"><span></span><strong>RECONNECTING</strong></div>
+    </header>
+
+    <section class="stage-message" id="stageMessage" hidden aria-live="assertive">
+      <span>MESSAGE</span>
+      <strong id="stageMessageText"></strong>
+    </section>
+
+    <section class="stage-timer-zone" aria-label="Stage timer">
+      <div class="stage-mode" id="stageMode">COUNTDOWN · RUNNING</div>
+      <div class="stage-timer" id="stageTimer">05:00</div>
+      <div class="stage-band-label" id="stageBandLabel">NORMAL</div>
+    </section>
+
+    <footer class="stage-footer" id="stageFooter">
+      <div class="stage-session current"><span>CURRENT</span><strong id="stageCurrent">NO ACTIVE SESSION</strong><em id="stageSpeaker"></em></div>
+      <div class="stage-schedule"><span>SCHEDULE</span><strong id="stageVariance">NOT STARTED</strong></div>
+      <div class="stage-session next"><span>NEXT</span><strong id="stageNext">—</strong></div>
+    </footer>
+
+    <div class="fullscreen-hint" id="fullscreenHint" hidden>PRESS F FOR FULLSCREEN</div>
+  </main>
+</body>
+</html>
