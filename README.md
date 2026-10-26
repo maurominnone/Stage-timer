@@ -7,6 +7,7 @@ Timer professionale, local-first, per eventi live. È una web app statica senza 
 ## Funzioni principali
 
 - viste separate **CONTROL** (`index.html`) e **STAGE** (`stage.html`);
+- interfaccia completa in italiano e inglese con selettore **IT/EN** e preferenza persistente;
 - countdown e count-up affidabili basati su differenze fra timestamp reali;
 - Start, Pause, Resume, Stop, Reset e modifica `+1`, `+5`, `−1` minuto anche durante l'esecuzione;
 - comportamento a zero configurabile: stop oppure overtime `+00:01`;
@@ -39,9 +40,15 @@ Aprire:
 
 È anche possibile usare qualsiasi server statico. L'apertura diretta dei file con `file://` non è consigliata perché alcuni browser limitano sincronizzazione, storage e fullscreen in quel contesto.
 
+## Lingua IT/EN
+
+Il selettore **IT/EN** è disponibile nella barra superiore di Control. La scelta viene salvata nel browser e sincronizzata con lo Stage. Sono localizzati etichette, pulsanti, stati, soglie, impostazioni, messaggi rapidi, indicatori AI e testi dello Stage.
+
+La lingua è una preferenza UI separata dai contenuti: nomi di preset creati dall’utente, titoli e note della scaletta, speaker e messaggi personalizzati non vengono tradotti né modificati. I nomi degli esempi inclusi vengono localizzati solo in visualizzazione, mantenendo invariati i dati salvati. Gli stati interni (`running`, `paused`, `pending` ecc.) restano stabili e indipendenti dalla lingua.
+
 ## Uso durante un evento
 
-1. Aprire **Control**.
+1. Aprire **Control** e scegliere **IT** o **EN**.
 2. Impostare ore, minuti, secondi, modalità e overtime; premere **APPLY TIME**.
 3. Premere **OPEN STAGE DISPLAY** per aprire lo Stage in un'altra tab, oppure **STAGE WINDOW** per una finestra separata.
 4. Spostare la finestra Stage sul monitor, TV o videowall.
@@ -134,7 +141,7 @@ Ogni elemento contiene:
 
 ## Persistenza e sincronizzazione
 
-Lo stato completo viene salvato nel browser sotto la chiave versionata `stageTimerAI.state.v1`. Include timer, impostazioni, soglie, preset, preferenze Stage, messaggi, Run of Show, configurazione Remote e configurazione AI.
+Lo stato completo viene salvato nel browser sotto la chiave versionata `stageTimerAI.state.v1`. Include timer, impostazioni, soglie, preset, preferenze Stage, lingua, messaggi, Run of Show, configurazione Remote e configurazione AI. La chiave non è stata cambiata: l’aggiornamento preserva i dati personalizzati già presenti e aggiunge soltanto la preferenza lingua mancante. La preferenza IT/EN è inoltre salvata nella chiave dedicata `stageTimerAI.language.v1`.
 
 La sincronizzazione Control/Stage usa solo API browser-native:
 
@@ -208,6 +215,7 @@ I test del core non richiedono dipendenze:
 
 ```bash
 node tests/core.test.js
+node tests/i18n.test.js
 ```
 
 Coprono drift da timestamp, salto dopo sospensione, pause/resume, reset, modifica tempo in corsa, overtime, stop a zero, count-up, soglie e scostamento Run of Show.
@@ -240,11 +248,13 @@ stage-timer-ai/
 │   ├── control.js
 │   ├── core.js
 │   ├── integrations.js
+│   ├── i18n.js
 │   ├── stage.js
 │   ├── store.js
 │   └── sync.js
 └── tests/
-    └── core.test.js
+    ├── core.test.js
+    └── i18n.test.js
 ```
 
 ## Browser

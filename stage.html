@@ -9,6 +9,7 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/app.css">
   <script defer src="js/core.js"></script>
+  <script defer src="js/i18n.js"></script>
   <script defer src="js/store.js"></script>
   <script defer src="js/sync.js"></script>
   <script defer src="js/integrations.js"></script>
@@ -22,23 +23,23 @@
     </header>
 
     <section class="stage-message" id="stageMessage" hidden aria-live="assertive">
-      <span>MESSAGE</span>
+      <span data-i18n="stage.message">MESSAGE</span>
       <strong id="stageMessageText"></strong>
     </section>
 
-    <section class="stage-timer-zone" aria-label="Stage timer">
+    <section class="stage-timer-zone" data-i18n-aria="stage.timerAria" aria-label="Stage timer">
       <div class="stage-mode" id="stageMode">COUNTDOWN · RUNNING</div>
       <div class="stage-timer" id="stageTimer">05:00</div>
       <div class="stage-band-label" id="stageBandLabel">NORMAL</div>
     </section>
 
     <footer class="stage-footer" id="stageFooter">
-      <div class="stage-session current"><span>CURRENT</span><strong id="stageCurrent">NO ACTIVE SESSION</strong><em id="stageSpeaker"></em></div>
-      <div class="stage-schedule"><span>SCHEDULE</span><strong id="stageVariance">NOT STARTED</strong></div>
-      <div class="stage-session next"><span>NEXT</span><strong id="stageNext">—</strong></div>
+      <div class="stage-session current"><span data-i18n="timer.current">CURRENT</span><strong id="stageCurrent">NO ACTIVE SESSION</strong><em id="stageSpeaker"></em></div>
+      <div class="stage-schedule"><span data-i18n="timer.schedule">SCHEDULE</span><strong id="stageVariance">NOT STARTED</strong></div>
+      <div class="stage-session next"><span data-i18n="timer.next">NEXT</span><strong id="stageNext">—</strong></div>
     </footer>
 
-    <div class="fullscreen-hint" id="fullscreenHint" hidden>PRESS F FOR FULLSCREEN</div>
+    <div class="fullscreen-hint" id="fullscreenHint" hidden data-i18n="stage.pressFullscreen">PRESS F FOR FULLSCREEN</div>
   </main>
 </body>
 </html>

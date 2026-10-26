@@ -4,6 +4,8 @@
   const $ = (id) => document.getElementById(id);
   const store = new StageTimerStore();
   let state = store.load();
+  let i18n = StageTimerI18n.create(state.ui.language);
+  let lastAppliedLanguage = '';
   let lastControlSeenAt = 0;
   let lastFitText = '';
   let cursorTimer = null;
@@ -77,7 +79,7 @@
     if (remoteStatus === 'connected') status = 'connected';
     else if (status === 'offline' && remoteStatus === 'reconnecting') status = 'reconnecting';
     elements.connection.dataset.status = status;
-    elements.connectionText.textContent = status.toUpperCase();
+    elements.connectionText.textContent = i18n.t(`connection.${status}`);
   }
 
   function fitTimer(force) {
@@ -105,7 +107,15 @@
     elements.timer.style.fontSize = `${Math.floor(best)}px`;
   }
 
+  function applyLanguage() {
+    if (lastAppliedLanguage === state.ui.language) return;
+    i18n.setLanguage(state.ui.language);
+    i18n.apply(document);
+    lastAppliedLanguage = state.ui.language;
+  }
+
   function render() {
+    applyLanguage();
     const now = Date.now();
     const timerView = StageTimerCore.deriveTimer(state.timer, state.thresholds, now);
     const display = StageTimerCore.formatClock(timerView.displayMs, {
@@ -120,19 +130,19 @@
     document.body.dataset.normalTone = state.thresholds.normalTone;
     document.body.classList.toggle('hide-session', !state.stage.showSessionInfo);
     document.body.classList.toggle('hide-status', !state.stage.showStatusLine);
-    elements.mode.textContent = `${state.timer.mode.toUpperCase()} · ${state.timer.status.toUpperCase()}`;
-    elements.band.textContent = timerView.band.toUpperCase();
+    elements.mode.textContent = `${i18n.t(`mode.${state.timer.mode}`)} · ${i18n.t(`status.${state.timer.status}`)}`;
+    elements.band.textContent = i18n.t(`band.${timerView.band}`);
 
     const context = StageTimerCore.getRunOfShowContext(state.runOfShow);
-    elements.current.textContent = context.current ? context.current.title : 'NO ACTIVE SESSION';
+    elements.current.textContent = context.current ? i18n.localizeDefaultRunItem(context.current) : i18n.t('timer.noActiveSession');
     elements.speaker.textContent = context.current && context.current.speaker ? context.current.speaker : '';
-    elements.next.textContent = context.next ? context.next.title : '—';
+    elements.next.textContent = context.next ? i18n.localizeDefaultRunItem(context.next) : '—';
     const variance = context.current ? StageTimerCore.scheduleVariance(state.runOfShow, context.current, now) : null;
-    elements.variance.textContent = StageTimerCore.formatVariance(variance);
+    elements.variance.textContent = i18n.formatVariance(variance);
 
     const messageVisible = state.message && (!state.message.expiresAt || now < state.message.expiresAt);
     elements.message.hidden = !messageVisible;
-    elements.messageText.textContent = messageVisible ? state.message.text : '';
+    elements.messageText.textContent = messageVisible ? (state.message.i18nKey ? i18n.t(state.message.i18nKey) : state.message.text) : '';
     renderConnection();
   }
 
@@ -140,9 +150,7 @@
     if (document.fullscreenElement) {
       document.exitFullscreen().catch(() => {});
     } else {
-      document.documentElement.requestFullscreen({ navigationUI: 'hide' }).catch(() => {
-        showFullscreenHint();
-      });
+      document.documentElement.requestFullscreen({ navigationUI: 'hide' }).catch(() => showFullscreenHint());
     }
   }
 
@@ -170,9 +178,7 @@
     }, 2000);
 
     window.addEventListener('resize', () => requestAnimationFrame(() => fitTimer(true)));
-    if ('ResizeObserver' in window) {
-      new ResizeObserver(() => fitTimer(true)).observe(elements.zone);
-    }
+    if ('ResizeObserver' in window) new ResizeObserver(() => fitTimer(true)).observe(elements.zone);
     document.addEventListener('keydown', (event) => {
       if (event.key.toLowerCase() === 'f') {
         event.preventDefault();

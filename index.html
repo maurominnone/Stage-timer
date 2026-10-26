@@ -9,6 +9,7 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/app.css">
   <script defer src="js/core.js"></script>
+  <script defer src="js/i18n.js"></script>
   <script defer src="js/store.js"></script>
   <script defer src="js/sync.js"></script>
   <script defer src="js/integrations.js"></script>
@@ -19,19 +20,23 @@
     <div class="brand-block">
       <div class="brand-mark" aria-hidden="true">ST</div>
       <div>
-        <p class="eyebrow">LIVE EVENT CONTROL</p>
+        <p class="eyebrow" data-i18n="top.liveEventControl">LIVE EVENT CONTROL</p>
         <h1>STAGE TIMER <span>AI</span></h1>
       </div>
     </div>
     <div class="topbar-actions">
+      <div class="language-switch" role="group" data-i18n-aria="language.label" aria-label="Language">
+        <button type="button" data-language="it" aria-pressed="false">IT</button>
+        <button type="button" data-language="en" aria-pressed="true">EN</button>
+      </div>
       <div class="connection-pill" id="stageConnectionPill" data-status="offline">
         <span class="status-dot"></span>
-        <span>STAGE <strong id="stageConnectionText">OFFLINE</strong></span>
+        <span><em class="connection-label" data-i18n="top.stageLabel">STAGE</em> <strong id="stageConnectionText">OFFLINE</strong></span>
       </div>
-      <button class="button button-secondary" id="openStageWindowButton" type="button">STAGE WINDOW</button>
-      <button class="button button-secondary" id="openFullscreenStageTopButton" type="button">FULLSCREEN STAGE</button>
-      <button class="button button-primary" id="openStageButton" type="button">OPEN STAGE DISPLAY</button>
-      <button class="icon-button" id="settingsButton" type="button" aria-label="Open settings" title="Settings">⚙</button>
+      <button class="button button-secondary" id="openStageWindowButton" type="button" data-i18n="top.stageWindow">STAGE WINDOW</button>
+      <button class="button button-secondary" id="openFullscreenStageTopButton" type="button" data-i18n="top.fullscreenStage">FULLSCREEN STAGE</button>
+      <button class="button button-primary" id="openStageButton" type="button" data-i18n="top.openStage">OPEN STAGE DISPLAY</button>
+      <button class="icon-button" id="settingsButton" type="button" data-i18n-aria="top.openSettings" data-i18n-title="settings.title" aria-label="Open settings" title="Settings">⚙</button>
     </div>
   </header>
 
@@ -39,250 +44,196 @@
     <section class="panel timer-panel" aria-labelledby="timerPanelTitle">
       <div class="panel-heading">
         <div>
-          <p class="eyebrow">MASTER TIMER</p>
-          <h2 id="timerPanelTitle">Control</h2>
+          <p class="eyebrow" data-i18n="timer.master">MASTER TIMER</p>
+          <h2 id="timerPanelTitle" data-i18n="timer.control">Control</h2>
         </div>
         <div class="status-badge" id="timerStatusBadge" data-status="idle">IDLE</div>
       </div>
 
       <div class="session-strip">
-        <div>
-          <span>CURRENT</span>
-          <strong id="currentSessionLabel">NO ACTIVE SESSION</strong>
-        </div>
-        <div>
-          <span>NEXT</span>
-          <strong id="nextSessionLabel">—</strong>
-        </div>
-        <div>
-          <span>SCHEDULE</span>
-          <strong id="scheduleVarianceLabel">NOT STARTED</strong>
-        </div>
+        <div><span data-i18n="timer.current">CURRENT</span><strong id="currentSessionLabel">NO ACTIVE SESSION</strong></div>
+        <div><span data-i18n="timer.next">NEXT</span><strong id="nextSessionLabel">—</strong></div>
+        <div><span data-i18n="timer.schedule">SCHEDULE</span><strong id="scheduleVarianceLabel">NOT STARTED</strong></div>
       </div>
 
       <div class="timer-readout-wrap" id="timerReadoutWrap" data-band="normal">
         <div class="timer-readout" id="timerReadout" aria-live="off">05:00</div>
-        <div class="timer-meta">
-          <span id="timerModeLabel">COUNTDOWN</span>
-          <span id="timerBandLabel">NORMAL</span>
-        </div>
+        <div class="timer-meta"><span id="timerModeLabel">COUNTDOWN</span><span id="timerBandLabel">NORMAL</span></div>
       </div>
 
       <div class="time-setup-row">
-        <div class="time-input-group" aria-label="Set timer duration">
-          <label><span>HOURS</span><input id="hoursInput" type="number" inputmode="numeric" min="0" max="99" value="0"></label>
+        <div class="time-input-group" data-i18n-aria="timer.adjustDuration" aria-label="Set timer duration">
+          <label><span data-i18n="timer.hours">HOURS</span><input id="hoursInput" type="number" inputmode="numeric" min="0" max="99" value="0"></label>
           <b>:</b>
-          <label><span>MIN</span><input id="minutesInput" type="number" inputmode="numeric" min="0" max="59" value="5"></label>
+          <label><span data-i18n="timer.minutesShort">MIN</span><input id="minutesInput" type="number" inputmode="numeric" min="0" max="59" value="5"></label>
           <b>:</b>
-          <label><span>SEC</span><input id="secondsInput" type="number" inputmode="numeric" min="0" max="59" value="0"></label>
+          <label><span data-i18n="timer.secondsShort">SEC</span><input id="secondsInput" type="number" inputmode="numeric" min="0" max="59" value="0"></label>
         </div>
         <div class="timer-options">
-          <label class="field compact-field"><span>MODE</span>
-            <select id="modeSelect">
-              <option value="countdown">COUNTDOWN</option>
-              <option value="countup">COUNT-UP</option>
-            </select>
+          <label class="field compact-field"><span data-i18n="timer.mode">MODE</span>
+            <select id="modeSelect"><option value="countdown" data-i18n="mode.countdown">COUNTDOWN</option><option value="countup" data-i18n="mode.countup">COUNT-UP</option></select>
           </label>
-          <label class="switch-field"><input id="overtimeToggle" type="checkbox" checked><span class="switch-ui"></span><span>OVERTIME</span></label>
-          <button class="button button-secondary" id="applyTimeButton" type="button">APPLY TIME</button>
+          <label class="switch-field"><input id="overtimeToggle" type="checkbox" checked><span class="switch-ui"></span><span data-i18n="timer.overtime">OVERTIME</span></label>
+          <button class="button button-secondary" id="applyTimeButton" type="button" data-i18n="timer.applyTime">APPLY TIME</button>
         </div>
       </div>
 
-      <div class="transport-controls" role="group" aria-label="Timer controls">
-        <button class="button button-start" id="startButton" type="button">START</button>
-        <button class="button button-secondary" id="pauseButton" type="button">PAUSE</button>
-        <button class="button button-secondary" id="resumeButton" type="button">RESUME</button>
-        <button class="button button-stop" id="stopButton" type="button">STOP</button>
-        <button class="button button-ghost" id="resetButton" type="button">RESET</button>
+      <div class="transport-controls" role="group" data-i18n-aria="timer.controls" aria-label="Timer controls">
+        <button class="button button-start" id="startButton" type="button" data-i18n="timer.start">START</button>
+        <button class="button button-secondary" id="pauseButton" type="button" data-i18n="timer.pause">PAUSE</button>
+        <button class="button button-secondary" id="resumeButton" type="button" data-i18n="timer.resume">RESUME</button>
+        <button class="button button-stop" id="stopButton" type="button" data-i18n="timer.stop">STOP</button>
+        <button class="button button-ghost" id="resetButton" type="button" data-i18n="timer.reset">RESET</button>
       </div>
 
-      <div class="adjust-controls" role="group" aria-label="Adjust timer duration">
-        <button class="button button-adjust" data-adjust="60000" type="button">+1 MIN</button>
-        <button class="button button-adjust" data-adjust="300000" type="button">+5 MIN</button>
-        <button class="button button-adjust danger" data-adjust="-60000" type="button">−1 MIN</button>
+      <div class="adjust-controls" role="group" data-i18n-aria="timer.adjustDuration" aria-label="Adjust timer duration">
+        <button class="button button-adjust" data-adjust="60000" type="button" data-i18n="timer.plusOne">+1 MIN</button>
+        <button class="button button-adjust" data-adjust="300000" type="button" data-i18n="timer.plusFive">+5 MIN</button>
+        <button class="button button-adjust danger" data-adjust="-60000" type="button" data-i18n="timer.minusOne">−1 MIN</button>
       </div>
 
       <div class="live-stats">
-        <div><span>SET TIME</span><strong id="setTimeLabel">05:00</strong></div>
-        <div><span>REMAINING</span><strong id="remainingTimeLabel">05:00</strong></div>
-        <div><span>ELAPSED</span><strong id="elapsedTimeLabel">00:00</strong></div>
-        <div><span>STAGE DISPLAY</span><strong id="stageStateLabel">OFFLINE</strong></div>
+        <div><span data-i18n="timer.setTime">SET TIME</span><strong id="setTimeLabel">05:00</strong></div>
+        <div><span data-i18n="timer.remaining">REMAINING</span><strong id="remainingTimeLabel">05:00</strong></div>
+        <div><span data-i18n="timer.elapsed">ELAPSED</span><strong id="elapsedTimeLabel">00:00</strong></div>
+        <div><span data-i18n="timer.stageDisplay">STAGE DISPLAY</span><strong id="stageStateLabel">OFFLINE</strong></div>
       </div>
     </section>
 
     <aside class="side-stack">
       <section class="panel preset-panel" aria-labelledby="presetTitle">
         <div class="panel-heading small-heading">
-          <div><p class="eyebrow">FAST SETUP</p><h2 id="presetTitle">Presets</h2></div>
-          <button class="button button-small button-secondary" id="newPresetButton" type="button">NEW</button>
+          <div><p class="eyebrow" data-i18n="preset.fastSetup">FAST SETUP</p><h2 id="presetTitle" data-i18n="preset.title">Presets</h2></div>
+          <button class="button button-small button-secondary" id="newPresetButton" type="button" data-i18n="preset.new">NEW</button>
         </div>
-        <label class="field"><span>PRESET</span><select id="presetSelect"></select></label>
+        <label class="field"><span data-i18n="preset.preset">PRESET</span><select id="presetSelect"></select></label>
         <div class="button-row four-up">
-          <button class="button button-small button-primary" id="loadPresetButton" type="button">LOAD</button>
-          <button class="button button-small button-secondary" id="editPresetButton" type="button">EDIT</button>
-          <button class="button button-small button-secondary" id="duplicatePresetButton" type="button">DUPLICATE</button>
-          <button class="button button-small button-ghost" id="deletePresetButton" type="button">DELETE</button>
+          <button class="button button-small button-primary" id="loadPresetButton" type="button" data-i18n="preset.load">LOAD</button>
+          <button class="button button-small button-secondary" id="editPresetButton" type="button" data-i18n="preset.edit">EDIT</button>
+          <button class="button button-small button-secondary" id="duplicatePresetButton" type="button" data-i18n="preset.duplicate">DUPLICATE</button>
+          <button class="button button-small button-ghost" id="deletePresetButton" type="button" data-i18n="preset.delete">DELETE</button>
         </div>
         <div class="threshold-summary">
-          <span><i class="swatch normal"></i>NORMAL <b id="normalThresholdText">&gt; 20%</b></span>
-          <span><i class="swatch warning"></i>WARNING <b id="warningThresholdText">≤ 20%</b></span>
-          <span><i class="swatch critical"></i>CRITICAL <b id="criticalThresholdText">≤ 60s</b></span>
+          <span><i class="swatch normal"></i><em class="threshold-label" data-i18n="band.normal">NORMAL</em><b id="normalThresholdText">&gt; 20%</b></span>
+          <span><i class="swatch warning"></i><em class="threshold-label" data-i18n="band.warning">WARNING</em><b id="warningThresholdText">≤ 20%</b></span>
+          <span><i class="swatch critical"></i><em class="threshold-label" data-i18n="band.critical">CRITICAL</em><b id="criticalThresholdText">≤ 60s</b></span>
         </div>
       </section>
 
       <section class="panel message-panel" aria-labelledby="messageTitle">
         <div class="panel-heading small-heading">
-          <div><p class="eyebrow">SPEAKER COMMS</p><h2 id="messageTitle">Stage message</h2></div>
-          <button class="button button-small button-ghost" id="clearMessageButton" type="button">CLEAR</button>
+          <div><p class="eyebrow" data-i18n="message.speakerComms">SPEAKER COMMS</p><h2 id="messageTitle" data-i18n="message.stageMessage">Stage message</h2></div>
+          <button class="button button-small button-ghost" id="clearMessageButton" type="button" data-i18n="message.clear">CLEAR</button>
         </div>
         <div class="message-grid" id="messageGrid"></div>
         <div class="custom-message-row">
-          <input id="customMessageInput" type="text" maxlength="80" placeholder="Custom message" aria-label="Custom stage message">
-          <button class="button button-primary" id="sendCustomMessageButton" type="button">SEND</button>
+          <input id="customMessageInput" type="text" maxlength="80" data-i18n-placeholder="message.custom" data-i18n-aria="message.customAria" placeholder="Custom message" aria-label="Custom stage message">
+          <button class="button button-primary" id="sendCustomMessageButton" type="button" data-i18n="message.send">SEND</button>
         </div>
         <div class="message-options">
-          <label class="field compact-field"><span>EXPIRES</span><input id="messageSecondsInput" type="number" min="1" max="3600" value="8"><em>sec</em></label>
-          <label class="switch-field"><input id="messageStickyToggle" type="checkbox"><span class="switch-ui"></span><span>UNTIL CLEARED</span></label>
+          <label class="field compact-field"><span data-i18n="message.expires">EXPIRES</span><input id="messageSecondsInput" type="number" min="1" max="3600" value="8"><em data-i18n="message.seconds">sec</em></label>
+          <label class="switch-field"><input id="messageStickyToggle" type="checkbox"><span class="switch-ui"></span><span data-i18n="message.untilCleared">UNTIL CLEARED</span></label>
         </div>
-        <div class="active-message" id="activeMessageBox" hidden>
-          <span>ON STAGE</span><strong id="activeMessageText">—</strong>
-        </div>
+        <div class="active-message" id="activeMessageBox" hidden><span data-i18n="message.onStage">ON STAGE</span><strong id="activeMessageText">—</strong></div>
       </section>
 
       <section class="panel ai-panel" aria-labelledby="aiTitle">
         <div class="panel-heading small-heading">
-          <div><p class="eyebrow">OPTIONAL / SAFE BY DEFAULT</p><h2 id="aiTitle">AI Pace Assistant</h2></div>
+          <div><p class="eyebrow" data-i18n="ai.optionalSafe">OPTIONAL / SAFE BY DEFAULT</p><h2 id="aiTitle" data-i18n="ai.title">AI Pace Assistant</h2></div>
           <span class="status-badge muted" id="aiModeBadge">OFF</span>
         </div>
         <div class="ai-metrics">
-          <div><span>CURRENT SECTION</span><strong id="aiCurrentSection">INTRO</strong></div>
-          <div><span>EXPECTED SECTION</span><strong id="aiExpectedSection">INTRO</strong></div>
-          <div><span>TIME LEFT</span><strong id="aiTimeLeft">05:00</strong></div>
-          <div><span>PACE</span><strong id="aiPace">ON PACE</strong></div>
-          <div><span>EST. FINISH</span><strong id="aiEstimatedFinish">—</strong></div>
+          <div><span data-i18n="ai.currentSection">CURRENT SECTION</span><strong id="aiCurrentSection">INTRO</strong></div>
+          <div><span data-i18n="ai.expectedSection">EXPECTED SECTION</span><strong id="aiExpectedSection">INTRO</strong></div>
+          <div><span data-i18n="ai.timeLeft">TIME LEFT</span><strong id="aiTimeLeft">05:00</strong></div>
+          <div><span data-i18n="ai.pace">PACE</span><strong id="aiPace">ON PACE</strong></div>
+          <div><span data-i18n="ai.estimatedFinish">EST. FINISH</span><strong id="aiEstimatedFinish">—</strong></div>
         </div>
         <div class="ai-suggestion" id="aiSuggestionBox" hidden>
-          <span>SUGGESTED MESSAGE</span>
-          <strong id="aiSuggestionText">—</strong>
-          <button class="button button-small button-primary" id="sendAiSuggestionButton" type="button">SEND</button>
+          <span data-i18n="ai.suggestedMessage">SUGGESTED MESSAGE</span><strong id="aiSuggestionText">—</strong>
+          <button class="button button-small button-primary" id="sendAiSuggestionButton" type="button" data-i18n="message.send">SEND</button>
         </div>
         <div class="button-row">
-          <button class="button button-small button-secondary" id="previousAiSectionButton" type="button">PREVIOUS SECTION</button>
-          <button class="button button-small button-secondary" id="nextAiSectionButton" type="button">NEXT SECTION</button>
-          <button class="button button-small button-ghost" id="configureAiButton" type="button">CONFIGURE</button>
+          <button class="button button-small button-secondary" id="previousAiSectionButton" type="button" data-i18n="ai.previousSection">PREVIOUS SECTION</button>
+          <button class="button button-small button-secondary" id="nextAiSectionButton" type="button" data-i18n="ai.nextSection">NEXT SECTION</button>
+          <button class="button button-small button-ghost" id="configureAiButton" type="button" data-i18n="ai.configure">CONFIGURE</button>
         </div>
       </section>
     </aside>
 
     <section class="panel ros-panel" aria-labelledby="rosTitle">
       <div class="panel-heading ros-heading">
-        <div>
-          <p class="eyebrow">EVENT FLOW</p>
-          <h2 id="rosTitle">Run of Show</h2>
-          <input id="runOfShowTitleInput" class="inline-title-input" type="text" maxlength="80" value="EVENT RUN OF SHOW" aria-label="Run of Show title">
-        </div>
+        <div><p class="eyebrow" data-i18n="ros.eventFlow">EVENT FLOW</p><h2 id="rosTitle" data-i18n="ros.title">Run of Show</h2><input id="runOfShowTitleInput" class="inline-title-input" type="text" maxlength="80" value="EVENT RUN OF SHOW" data-i18n-aria="ros.titleAria" aria-label="Run of Show title"></div>
         <div class="ros-actions">
-          <button class="button button-secondary" id="previousSessionButton" type="button">PREVIOUS</button>
-          <button class="button button-secondary" id="skipSessionButton" type="button">SKIP</button>
-          <button class="button button-primary" id="nextSessionButton" type="button">START NEXT</button>
-          <button class="button button-secondary" id="addRunItemButton" type="button">ADD ITEM</button>
+          <button class="button button-secondary" id="previousSessionButton" type="button" data-i18n="ros.previous">PREVIOUS</button>
+          <button class="button button-secondary" id="skipSessionButton" type="button" data-i18n="ros.skip">SKIP</button>
+          <button class="button button-primary" id="nextSessionButton" type="button" data-i18n="ros.startNext">START NEXT</button>
+          <button class="button button-secondary" id="addRunItemButton" type="button" data-i18n="ros.addItem">ADD ITEM</button>
         </div>
       </div>
       <div class="ros-table-wrap">
-        <table class="ros-table">
-          <thead><tr><th>TIME</th><th>SESSION</th><th>SPEAKER</th><th>DURATION</th><th>NOTES</th><th>STATUS</th><th><span class="sr-only">Actions</span></th></tr></thead>
-          <tbody id="runOfShowBody"></tbody>
-        </table>
+        <table class="ros-table"><thead><tr><th data-i18n="ros.time">TIME</th><th data-i18n="ros.session">SESSION</th><th data-i18n="ros.speaker">SPEAKER</th><th data-i18n="ros.duration">DURATION</th><th data-i18n="ros.notes">NOTES</th><th data-i18n="ros.status">STATUS</th><th><span class="sr-only" data-i18n="ros.actions">Actions</span></th></tr></thead><tbody id="runOfShowBody"></tbody></table>
       </div>
       <div class="mobile-ros-list" id="mobileRunOfShowList"></div>
     </section>
   </main>
 
-  <footer class="app-footer">
-    <span>STAGE TIMER AI · LOCAL-FIRST · NO BACKEND REQUIRED</span>
-    <span class="shortcut-hint">SPACE Start/Pause · R Reset · ↑ +1m · ↓ −1m · M Message · F Stage</span>
-  </footer>
+  <footer class="app-footer"><span data-i18n="footer.localFirst">STAGE TIMER AI · LOCAL-FIRST · NO BACKEND REQUIRED</span><span class="shortcut-hint" data-i18n="footer.shortcuts">SPACE Start/Pause · R Reset · ↑ +1m · ↓ −1m · M Message · F Stage</span></footer>
 
   <dialog id="presetDialog" class="app-dialog">
     <form method="dialog" id="presetForm">
-      <div class="dialog-heading"><div><p class="eyebrow">PRESET</p><h2 id="presetDialogTitle">New preset</h2></div><button class="dialog-close" value="cancel" aria-label="Close">×</button></div>
+      <div class="dialog-heading"><div><p class="eyebrow" data-i18n="preset.preset">PRESET</p><h2 id="presetDialogTitle">New preset</h2></div><button class="dialog-close" value="cancel" formnovalidate data-i18n-aria="settings.close" aria-label="Close">×</button></div>
       <input id="presetIdInput" type="hidden">
-      <label class="field"><span>NAME</span><input id="presetNameInput" type="text" maxlength="40" required></label>
+      <label class="field"><span data-i18n="preset.name">NAME</span><input id="presetNameInput" type="text" maxlength="40" required></label>
       <div class="form-grid three">
-        <label class="field"><span>HOURS</span><input id="presetHoursInput" type="number" min="0" max="99" value="0"></label>
-        <label class="field"><span>MINUTES</span><input id="presetMinutesInput" type="number" min="0" max="59" value="5"></label>
-        <label class="field"><span>SECONDS</span><input id="presetSecondsInput" type="number" min="0" max="59" value="0"></label>
+        <label class="field"><span data-i18n="timer.hours">HOURS</span><input id="presetHoursInput" type="number" min="0" max="99" value="0"></label>
+        <label class="field"><span data-i18n="preset.minutes">MINUTES</span><input id="presetMinutesInput" type="number" min="0" max="59" value="5"></label>
+        <label class="field"><span data-i18n="preset.seconds">SECONDS</span><input id="presetSecondsInput" type="number" min="0" max="59" value="0"></label>
       </div>
       <div class="form-grid two">
-        <label class="field"><span>MODE</span><select id="presetModeInput"><option value="countdown">COUNTDOWN</option><option value="countup">COUNT-UP</option></select></label>
-        <label class="switch-field dialog-switch"><input id="presetOvertimeInput" type="checkbox" checked><span class="switch-ui"></span><span>OVERTIME ENABLED</span></label>
+        <label class="field"><span data-i18n="timer.mode">MODE</span><select id="presetModeInput"><option value="countdown" data-i18n="mode.countdown">COUNTDOWN</option><option value="countup" data-i18n="mode.countup">COUNT-UP</option></select></label>
+        <label class="switch-field dialog-switch"><input id="presetOvertimeInput" type="checkbox" checked><span class="switch-ui"></span><span data-i18n="preset.overtimeEnabled">OVERTIME ENABLED</span></label>
       </div>
       <div class="form-grid two">
-        <label class="field"><span>WARNING BELOW (%)</span><input id="presetWarningInput" type="number" min="1" max="99" value="20"></label>
-        <label class="field"><span>CRITICAL LAST (SEC)</span><input id="presetCriticalInput" type="number" min="1" max="86400" value="60"></label>
+        <label class="field"><span data-i18n="preset.warningBelow">WARNING BELOW (%)</span><input id="presetWarningInput" type="number" min="1" max="99" value="20"></label>
+        <label class="field"><span data-i18n="preset.criticalLastSec">CRITICAL LAST (SEC)</span><input id="presetCriticalInput" type="number" min="1" max="86400" value="60"></label>
       </div>
-      <div class="dialog-actions"><button class="button button-ghost" value="cancel">CANCEL</button><button class="button button-primary" id="savePresetButton" value="default">SAVE PRESET</button></div>
+      <div class="dialog-actions"><button class="button button-ghost" value="cancel" formnovalidate data-i18n="settings.cancel">CANCEL</button><button class="button button-primary" id="savePresetButton" value="default" data-i18n="preset.save">SAVE PRESET</button></div>
     </form>
   </dialog>
 
   <dialog id="runItemDialog" class="app-dialog">
     <form method="dialog" id="runItemForm">
-      <div class="dialog-heading"><div><p class="eyebrow">RUN OF SHOW</p><h2 id="runItemDialogTitle">Add item</h2></div><button class="dialog-close" value="cancel" aria-label="Close">×</button></div>
+      <div class="dialog-heading"><div><p class="eyebrow" data-i18n="ros.title">RUN OF SHOW</p><h2 id="runItemDialogTitle">Add item</h2></div><button class="dialog-close" value="cancel" formnovalidate data-i18n-aria="settings.close" aria-label="Close">×</button></div>
       <input id="runItemIdInput" type="hidden">
-      <div class="form-grid two">
-        <label class="field"><span>PLANNED TIME</span><input id="runItemStartInput" type="time" required></label>
-        <label class="field"><span>TITLE</span><input id="runItemTitleInput" type="text" maxlength="60" required></label>
-      </div>
-      <div class="form-grid two">
-        <label class="field"><span>SPEAKER (OPTIONAL)</span><input id="runItemSpeakerInput" type="text" maxlength="60"></label>
-        <label class="field"><span>DURATION (MINUTES)</span><input id="runItemDurationInput" type="number" min="1" max="1440" required></label>
-      </div>
-      <label class="field"><span>NOTES</span><textarea id="runItemNotesInput" rows="3" maxlength="240"></textarea></label>
-      <div class="dialog-actions"><button class="button button-ghost" value="cancel">CANCEL</button><button class="button button-primary" id="saveRunItemButton" value="default">SAVE ITEM</button></div>
+      <div class="form-grid two"><label class="field"><span data-i18n="ros.plannedTime">PLANNED TIME</span><input id="runItemStartInput" type="time" required></label><label class="field"><span data-i18n="ros.itemTitle">TITLE</span><input id="runItemTitleInput" type="text" maxlength="60" required></label></div>
+      <div class="form-grid two"><label class="field"><span data-i18n="ros.speakerOptional">SPEAKER (OPTIONAL)</span><input id="runItemSpeakerInput" type="text" maxlength="60"></label><label class="field"><span data-i18n="ros.durationMinutes">DURATION (MINUTES)</span><input id="runItemDurationInput" type="number" min="1" max="1440" required></label></div>
+      <label class="field"><span data-i18n="ros.notes">NOTES</span><textarea id="runItemNotesInput" rows="3" maxlength="240"></textarea></label>
+      <div class="dialog-actions"><button class="button button-ghost" value="cancel" formnovalidate data-i18n="settings.cancel">CANCEL</button><button class="button button-primary" id="saveRunItemButton" value="default" data-i18n="ros.saveItem">SAVE ITEM</button></div>
     </form>
   </dialog>
 
   <dialog id="settingsDialog" class="app-dialog app-dialog-wide">
     <form method="dialog" id="settingsForm">
-      <div class="dialog-heading"><div><p class="eyebrow">APPLICATION</p><h2>Settings</h2></div><button class="dialog-close" value="cancel" aria-label="Close">×</button></div>
+      <div class="dialog-heading"><div><p class="eyebrow" data-i18n="settings.application">APPLICATION</p><h2 data-i18n="settings.title">Settings</h2></div><button class="dialog-close" value="cancel" formnovalidate data-i18n-aria="settings.close" aria-label="Close">×</button></div>
       <div class="settings-grid">
-        <section>
-          <h3>Timer thresholds</h3>
-          <label class="field"><span>WARNING BELOW (%)</span><input id="settingsWarningInput" type="number" min="1" max="99"></label>
-          <label class="field"><span>CRITICAL LAST (SECONDS)</span><input id="settingsCriticalInput" type="number" min="1" max="86400"></label>
-          <label class="field"><span>NORMAL COLOR</span><select id="settingsNormalTone"><option value="white">WHITE</option><option value="green">GREEN</option></select></label>
-        </section>
-        <section>
-          <h3>Stage display</h3>
-          <label class="switch-field dialog-switch"><input id="settingsSessionInfo" type="checkbox"><span class="switch-ui"></span><span>SHOW CURRENT / NEXT</span></label>
-          <label class="switch-field dialog-switch"><input id="settingsStatusLine" type="checkbox"><span class="switch-ui"></span><span>SHOW STATUS LINE</span></label>
-          <label class="switch-field dialog-switch"><input id="settingsAlwaysHours" type="checkbox"><span class="switch-ui"></span><span>ALWAYS SHOW HOURS</span></label>
-          <button class="button button-secondary full-width" id="openFullscreenStageButton" type="button">OPEN FULLSCREEN STAGE</button>
-        </section>
-        <section>
-          <h3>Remote Stage (optional)</h3>
-          <label class="switch-field dialog-switch"><input id="remoteEnabledInput" type="checkbox"><span class="switch-ui"></span><span>ENABLE EXTERNAL REALTIME</span></label>
-          <label class="field"><span>WSS ENDPOINT</span><input id="remoteEndpointInput" type="url" placeholder="wss://your-service.example/ws"></label>
-          <label class="field"><span>SESSION CODE</span><input id="remoteSessionCodeInput" type="text" maxlength="8"></label>
-          <p class="field-note">Optional adapter only. No secret is stored in this app.</p>
-        </section>
+        <section><h3 data-i18n="settings.timerThresholds">Timer thresholds</h3><label class="field"><span data-i18n="preset.warningBelow">WARNING BELOW (%)</span><input id="settingsWarningInput" type="number" min="1" max="99"></label><label class="field"><span data-i18n="settings.criticalLastSeconds">CRITICAL LAST (SECONDS)</span><input id="settingsCriticalInput" type="number" min="1" max="86400"></label><label class="field"><span data-i18n="settings.normalColor">NORMAL COLOR</span><select id="settingsNormalTone"><option value="white" data-i18n="settings.white">WHITE</option><option value="green" data-i18n="settings.green">GREEN</option></select></label></section>
+        <section><h3 data-i18n="settings.stageDisplay">Stage display</h3><label class="switch-field dialog-switch"><input id="settingsSessionInfo" type="checkbox"><span class="switch-ui"></span><span data-i18n="settings.showCurrentNext">SHOW CURRENT / NEXT</span></label><label class="switch-field dialog-switch"><input id="settingsStatusLine" type="checkbox"><span class="switch-ui"></span><span data-i18n="settings.showStatusLine">SHOW STATUS LINE</span></label><label class="switch-field dialog-switch"><input id="settingsAlwaysHours" type="checkbox"><span class="switch-ui"></span><span data-i18n="settings.alwaysShowHours">ALWAYS SHOW HOURS</span></label><button class="button button-secondary full-width" id="openFullscreenStageButton" type="button" data-i18n="settings.openFullscreenStage">OPEN FULLSCREEN STAGE</button></section>
+        <section><h3 data-i18n="settings.remoteOptional">Remote Stage (optional)</h3><label class="switch-field dialog-switch"><input id="remoteEnabledInput" type="checkbox"><span class="switch-ui"></span><span data-i18n="settings.enableRealtime">ENABLE EXTERNAL REALTIME</span></label><label class="field"><span data-i18n="settings.endpoint">WSS ENDPOINT</span><input id="remoteEndpointInput" type="url" placeholder="wss://your-service.example/ws"></label><label class="field"><span data-i18n="settings.sessionCode">SESSION CODE</span><input id="remoteSessionCodeInput" type="text" maxlength="8"></label><p class="field-note" data-i18n="settings.remoteNote">Optional adapter only. No secret is stored in this app.</p></section>
       </div>
-      <div class="dialog-actions split-actions"><button class="button button-stop" id="resetApplicationButton" value="cancel">RESET LOCAL DATA</button><div><button class="button button-ghost" value="cancel">CANCEL</button><button class="button button-primary" id="saveSettingsButton" value="default">SAVE SETTINGS</button></div></div>
+      <div class="dialog-actions split-actions"><button class="button button-stop" id="resetApplicationButton" value="cancel" formnovalidate data-i18n="settings.resetLocalData">RESET LOCAL DATA</button><div><button class="button button-ghost" value="cancel" formnovalidate data-i18n="settings.cancel">CANCEL</button><button class="button button-primary" id="saveSettingsButton" value="default" data-i18n="settings.save">SAVE SETTINGS</button></div></div>
     </form>
   </dialog>
 
   <dialog id="aiDialog" class="app-dialog app-dialog-wide">
     <form method="dialog" id="aiForm">
-      <div class="dialog-heading"><div><p class="eyebrow">OPTIONAL INTEGRATION</p><h2>AI Pace Assistant</h2></div><button class="dialog-close" value="cancel" aria-label="Close">×</button></div>
-      <div class="form-grid two">
-        <label class="field"><span>MODE</span><select id="aiModeInput"><option value="off">OFF</option><option value="suggest">SUGGEST</option><option value="auto">AUTO MESSAGES</option></select></label>
-        <label class="field"><span>EXTERNAL AI ENDPOINT (OPTIONAL)</span><input id="aiEndpointInput" type="url" placeholder="https://secure-service.example/analyze"></label>
-      </div>
-      <label class="switch-field dialog-switch warning-switch"><input id="aiAutoConfirmedInput" type="checkbox"><span class="switch-ui"></span><span>I EXPLICITLY ENABLE AUTOMATIC STAGE MESSAGES</span></label>
-      <label class="field"><span>SECTIONS — ONE PER LINE: NAME | MINUTES</span><textarea id="aiSectionsInput" rows="7" spellcheck="false"></textarea></label>
-      <label class="field"><span>SPEECH / AGENDA / KEY POINTS</span><textarea id="aiSpeechTextInput" rows="6" placeholder="Paste the speech outline or agenda. It stays in this browser unless an external service is explicitly configured."></textarea></label>
-      <div class="integration-note"><strong>SECURITY</strong><span>The timer works without AI. API keys must stay in a separate secure service; never put them in this repository or browser storage.</span></div>
-      <div class="dialog-actions"><button class="button button-ghost" value="cancel">CANCEL</button><button class="button button-primary" id="saveAiButton" value="default">SAVE AI SETTINGS</button></div>
+      <div class="dialog-heading"><div><p class="eyebrow" data-i18n="ai.optionalIntegration">OPTIONAL INTEGRATION</p><h2 data-i18n="ai.title">AI Pace Assistant</h2></div><button class="dialog-close" value="cancel" formnovalidate data-i18n-aria="settings.close" aria-label="Close">×</button></div>
+      <div class="form-grid two"><label class="field"><span data-i18n="ai.mode">MODE</span><select id="aiModeInput"><option value="off" data-i18n="ai.off">OFF</option><option value="suggest" data-i18n="ai.suggest">SUGGEST</option><option value="auto" data-i18n="ai.auto">AUTO MESSAGES</option></select></label><label class="field"><span data-i18n="ai.externalEndpoint">EXTERNAL AI ENDPOINT (OPTIONAL)</span><input id="aiEndpointInput" type="url" placeholder="https://secure-service.example/analyze"></label></div>
+      <label class="switch-field dialog-switch warning-switch"><input id="aiAutoConfirmedInput" type="checkbox"><span class="switch-ui"></span><span data-i18n="ai.autoConfirm">I EXPLICITLY ENABLE AUTOMATIC STAGE MESSAGES</span></label>
+      <label class="field"><span data-i18n="ai.sectionsHelp">SECTIONS — ONE PER LINE: NAME | MINUTES</span><textarea id="aiSectionsInput" rows="7" spellcheck="false"></textarea></label>
+      <label class="field"><span data-i18n="ai.speechHelp">SPEECH / AGENDA / KEY POINTS</span><textarea id="aiSpeechTextInput" rows="6" data-i18n-placeholder="ai.speechPlaceholder" placeholder="Paste the speech outline or agenda. It stays in this browser unless an external service is explicitly configured."></textarea></label>
+      <div class="integration-note"><strong data-i18n="ai.security">SECURITY</strong><span data-i18n="ai.securityNote">The timer works without AI. API keys must stay in a separate secure service; never put them in this repository or browser storage.</span></div>
+      <div class="dialog-actions"><button class="button button-ghost" value="cancel" formnovalidate data-i18n="settings.cancel">CANCEL</button><button class="button button-primary" id="saveAiButton" value="default" data-i18n="ai.save">SAVE AI SETTINGS</button></div>
     </form>
   </dialog>
 

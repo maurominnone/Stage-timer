@@ -73,6 +73,14 @@
     return Number.isFinite(number) ? number : fallback;
   }
 
+  function defaultLanguage() {
+    if (global.StageTimerI18n && typeof global.StageTimerI18n.detectLanguage === 'function') {
+      return global.StageTimerI18n.detectLanguage();
+    }
+    const browserLanguage = global.navigator && global.navigator.language ? global.navigator.language : 'en';
+    return String(browserLanguage).toLowerCase().startsWith('it') ? 'it' : 'en';
+  }
+
   function createInitialState(now) {
     const timestamp = Number.isFinite(now) ? now : Date.now();
     return {
@@ -129,7 +137,8 @@
       },
       ui: {
         compactRunOfShow: false,
-        activePanel: 'timer'
+        activePanel: 'timer',
+        language: defaultLanguage()
       }
     };
   }
@@ -171,6 +180,7 @@
     state.ai = Object.assign({}, fallback.ai, state.ai || {});
     state.ai.sections = Array.isArray(state.ai.sections) && state.ai.sections.length ? state.ai.sections : fallback.ai.sections;
     state.ui = Object.assign({}, fallback.ui, state.ui || {});
+    state.ui.language = state.ui.language === 'it' ? 'it' : 'en';
     return state;
   }
 
@@ -385,15 +395,23 @@
     const currentIndex = clamp(Math.floor(toFiniteNumber(ai.currentSectionIndex, 0)), 0, Math.max(0, sections.length - 1));
     const current = sections[currentIndex] || null;
     const expected = sections[expectedIndex] || null;
-    const pace = currentIndex > expectedIndex ? 'AHEAD' : currentIndex < expectedIndex ? 'BEHIND' : 'ON PACE';
+    const paceKey = currentIndex > expectedIndex ? 'ahead' : currentIndex < expectedIndex ? 'behind' : 'onPace';
+    const pace = paceKey === 'ahead' ? 'AHEAD' : paceKey === 'behind' ? 'BEHIND' : 'ON PACE';
     const remainingPlan = sections.slice(currentIndex).reduce((sum, section) => sum + Math.max(MIN_DURATION_MS, toFiniteNumber(section.durationMs, 0)), 0);
     const estimatedFinishAt = now + remainingPlan;
-    let suggestion = '';
-    if (timerView.remainingMs <= 0) suggestion = 'TIME';
-    else if (timerView.remainingMs <= 60 * 1000) suggestion = 'WRAP UP';
-    else if (timerView.remainingMs <= 2 * 60 * 1000) suggestion = '2 MIN LEFT';
-    else if (pace === 'BEHIND' && expectedIndex >= Math.max(0, sections.length - 2)) suggestion = 'MOVE TO CONCLUSION';
-    return { current, expected, pace, estimatedFinishAt, suggestion, timerView };
+    let suggestionKey = '';
+    if (timerView.remainingMs <= 0) suggestionKey = 'speaker.time';
+    else if (timerView.remainingMs <= 60 * 1000) suggestionKey = 'speaker.wrapUp';
+    else if (timerView.remainingMs <= 2 * 60 * 1000) suggestionKey = 'speaker.twoMinutes';
+    else if (paceKey === 'behind' && expectedIndex >= Math.max(0, sections.length - 2)) suggestionKey = 'speaker.conclusion';
+    const englishSuggestions = {
+      'speaker.time': 'TIME',
+      'speaker.wrapUp': 'WRAP UP',
+      'speaker.twoMinutes': '2 MIN LEFT',
+      'speaker.conclusion': 'MOVE TO CONCLUSION'
+    };
+    const suggestion = englishSuggestions[suggestionKey] || '';
+    return { current, expected, pace, paceKey, estimatedFinishAt, suggestion, suggestionKey, timerView };
   }
 
   const api = {
